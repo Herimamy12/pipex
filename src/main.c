@@ -16,6 +16,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
+	char	*line = get_next_line(1);
+	p_error(line);
 	data = new_data(argc, argv, env);
 	if (!data)
 		return (p_error("Data not created\n"), 2);

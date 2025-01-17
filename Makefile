@@ -1,5 +1,9 @@
 NAME			=	pipex
 
+LIBFT			=	./libft/libft.a
+
+LIBFT_DIR		=	./libft/
+
 SRC				=	./src/main.c ./src/parser.c
 
 CC				=	cc -Wall -Werror -Wextra
@@ -7,6 +11,8 @@ CC				=	cc -Wall -Werror -Wextra
 OBJ_DIR			=	obj
 
 OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
+
+.SILENT			:
 
 ${shell mkdir -p ${OBJ_DIR}}
 
@@ -16,17 +22,21 @@ ${OBJ_DIR}/%.o	:	./src/%.c
 all				:	$(NAME)
 
 $(NAME)			:	$(OBJ)
-					$(CC) -o $@ $^
+					make -C $(LIBFT_DIR)
+					$(CC) -o $@ $^ $(LIBFT)
 
 clean			:
+					make clean -C ${LIBFT_DIR}
 					rm -rf $(OBJ_DIR)
 					clear
 
 fclean			:	clean
+					make fclean -C ${LIBFT_DIR}
 					rm -f $(NAME)
 					clear
 
-re				:	fclean all
+re				:	fclean
+					make -C ./
 
 test			:	all
 					clear
