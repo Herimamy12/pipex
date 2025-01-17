@@ -1,25 +1,39 @@
-NAME	=	pipex
+NAME			=	pipex
 
-SRC		=	./src/main.c ./src/parser.c
+SRC				=	./src/main.c ./src/parser.c
 
-CC		=	cc -Wall -Werror -Wextra
+CC				=	cc -Wall -Werror -Wextra
 
-OBJ		=	$(SRC:.c=.o)
+OBJ_DIR			=	obj
 
-%o		:	%.c
-			$(CC) -o $@ -c $<
+OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
 
-all		:	$(NAME)
+${shell mkdir -p ${OBJ_DIR}}
 
-$(NAME)	:	$(OBJ)
-			$(CC) -o $@ $^
+${OBJ_DIR}/%.o	:	./src/%.c
+					${CC} ${CFLAGS} -o $@ -c $<
 
-clean	:
-			rm -f $(OBJ)
+all				:	$(NAME)
 
-fclean	:	clean
-			rm -f $(NAME)
+$(NAME)			:	$(OBJ)
+					$(CC) -o $@ $^
 
-re		:	fclean all
+clean			:
+					rm -rf $(OBJ_DIR)
+					clear
 
-.PHONY	:	all clean fclean re
+fclean			:	clean
+					rm -f $(NAME)
+					clear
+
+re				:	fclean all
+
+test			:	all
+					clear
+					./$(NAME) file1 "ls -l -a -t" "cat -e" file2
+
+false			:	all
+					clear
+					./$(NAME) file file
+
+.PHONY			:	all clean fclean re

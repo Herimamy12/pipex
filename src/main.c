@@ -12,12 +12,28 @@
 
 #include "../include/pipex.h"
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
-    write(1, argv[0], 5);
-    write(1, "\n", 1);
-    debug();
-    return (0);
-    (void)argc;
-    (void)env;
+	t_data	*data;
+
+	data = new_data(argc, argv, env);
+	if (!data)
+		return (p_error("Data not created\n"), 2);
+	return (0);
 }
+
+// int	main(int argc, char **argv, char **env)
+// {
+// 	char	*arg[]={
+// 		"-l",
+// 		"-m",
+// 		NULL
+// 	};
+// 	t_data	*data;
+
+// 	// execve("/bin/ls", arg, env);
+// 	data = new_data(argc, argv, env);
+// 	if (!data)
+// 		return (p_error("Data not created\n"), 2);
+// 	return (0);
+// }
