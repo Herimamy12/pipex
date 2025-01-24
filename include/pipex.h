@@ -30,6 +30,7 @@ typedef struct s_data
 {
 	t_cmd	*cmd1;
 	t_cmd	*cmd2;
+	char	**path;
 	char	*file1;
 	char	*file2;
 }			t_data;
@@ -43,10 +44,14 @@ void	destroy_cmd(t_cmd *cmd);
 // ------------------------DEBUG FUNCTION && ERROR
 //
 void	p_error(char *str);
+void	p_splited(char **split);
 
 //
 // ------------------------PARSER
 //
 t_data	*new_data(int argc, char **argv, char **env);
+char	**get_more_path(char *tmp);
+char	*get_one_path(char **env);
+char	**get_path(char **env);
 
 #endif

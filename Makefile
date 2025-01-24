@@ -4,7 +4,8 @@ LIBFT			=	./libft/libft.a
 
 LIBFT_DIR		=	./libft/
 
-SRC				=	./src/main.c ./src/parser.c
+SRC				=	./src/main.c ./src/parser.c ./src/print.c \
+					./src/get_path.c
 
 CC				=	cc -Wall -Werror -Wextra
 
