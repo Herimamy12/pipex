@@ -39,6 +39,8 @@ typedef struct s_data
 // ------------------------DESTROY
 //
 void	destroy_cmd(t_cmd *cmd);
+void	destroy_data(t_data *data);
+void	destroy_splited(char **split);
 
 //
 // ------------------------DEBUG FUNCTION && ERROR

@@ -19,6 +19,7 @@ int	main(int argc, char **argv, char **env)
 	data = new_data(argc, argv, env);
 	if (!data)
 		return (p_error("Data not created\n"), 2);
+	destroy_data (data);
 	return (0);
 }
 

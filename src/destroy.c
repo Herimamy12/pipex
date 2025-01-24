@@ -12,13 +12,33 @@
 
 #include "../include/pipex.h"
 
-void	destroy_cmd(t_cmd *cmd)
+void	destroy_data(t_data *data)
 {
-	if (!cmd)
+	if (!data)
 		return ;
-	if (cmd->cmd)
-		free(cmd->cmd);
-	if (cmd->arg)
-		destroy_arg(cmd->arg);
-	free (cmd);
+	destroy_splited (data->path);
+	free (data);
 }
+
+void	destroy_splited(char **split)
+{
+	if (!split)
+		return ;
+	while (*split)
+	{
+		free(*split);
+		split++;
+	}
+	// free (split);
+}
+
+// void	destroy_cmd(t_cmd *cmd)
+// {
+// 	if (!cmd)
+// 		return ;
+// 	if (cmd->cmd)
+// 		free(cmd->cmd);
+// 	if (cmd->arg)
+// 		destroy_arg(cmd->arg);
+// 	free (cmd);
+// }

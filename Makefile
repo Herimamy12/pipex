@@ -5,9 +5,9 @@ LIBFT			=	./libft/libft.a
 LIBFT_DIR		=	./libft/
 
 SRC				=	./src/main.c ./src/parser.c ./src/print.c \
-					./src/get_path.c
+					./src/get_path.c destroy.c
 
-CC				=	cc -Wall -Werror -Wextra
+CC				=	gcc -Wall -Werror -Wextra -g
 
 OBJ_DIR			=	obj
 
