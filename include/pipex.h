@@ -72,5 +72,6 @@ int		new_file(char *path, char type);
 // ------------------------EXEC
 //
 int		exec_pipex(t_data *data, char **env);
+int		set_stream(int *fds, int fd, int file);
 
 #endif

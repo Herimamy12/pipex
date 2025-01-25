@@ -40,7 +40,7 @@ int	new_file(char *path, char type)
 	if (type == 'R')
 		fd = open(path, O_RDONLY);
 	else
-		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 777);
+		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
 		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
 	return (fd);
