@@ -17,12 +17,9 @@ char	**get_path(char **env)
 	char	*tmp;
 	char	**path;
 
-	path = (char **)malloc(sizeof(char *));
-	if (!path)
-		return (p_error("Alloc path eroor\n"), NULL);
 	tmp = get_one_path (env);
 	if (!tmp)
-		return (free(path), NULL);
+		return (NULL);
 	path = get_more_path (tmp);
 	if (!path)
 		return (free(path), NULL);
@@ -39,12 +36,23 @@ char	**get_more_path(char *tmp)
 	if (!path)
 		return (p_error("Splited PATH error\n"), NULL);
 	free (tmp);
+	path = add_suffix(path, path);
 	return (path);
+}
+
+char	**add_suffix(char **path, char **tmp)
+{
+	while (*path)
+	{
+		*path = ft_strjoin_get(*path, "/");
+		path++;
+	}
+	return (tmp);
 }
 
 char	*get_one_path(char **env)
 {
-	while (*env)
+	while (env && *env)
 	{
 		if (!ft_strncmp("PATH", *env, 4))
 			return (ft_strdup(*env));

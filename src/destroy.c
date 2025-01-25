@@ -16,11 +16,17 @@ void	destroy_data(t_data *data)
 {
 	if (!data)
 		return ;
-	destroy_splited (data->path);
+	destroy_splited (data->path, data->path);
+	destroy_cmd (data->cmd1);
+	destroy_cmd (data->cmd2);
+	if (data->file1 != -1)
+		close (data->file1);
+	if (data->file2 != -1)
+		close (data->file2);
 	free (data);
 }
 
-void	destroy_splited(char **split)
+void	destroy_splited(char **split, char **tmp)
 {
 	if (!split)
 		return ;
@@ -29,16 +35,16 @@ void	destroy_splited(char **split)
 		free(*split);
 		split++;
 	}
-	// free (split);
+	free (tmp);
 }
 
-// void	destroy_cmd(t_cmd *cmd)
-// {
-// 	if (!cmd)
-// 		return ;
-// 	if (cmd->cmd)
-// 		free(cmd->cmd);
-// 	if (cmd->arg)
-// 		destroy_arg(cmd->arg);
-// 	free (cmd);
-// }
+void	destroy_cmd(t_cmd *cmd)
+{
+	if (!cmd)
+		return ;
+	if (cmd->cmd)
+		free(cmd->cmd);
+	if (cmd->arg)
+		destroy_splited(cmd->arg, cmd->arg);
+	free (cmd);
+}

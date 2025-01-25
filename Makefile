@@ -41,10 +41,14 @@ re				:	fclean
 
 test			:	all
 					clear
-					./$(NAME) file1 "ls -l -a -t" "cat -e" file2
+					./$(NAME) file1 "ls" "cat -e" file2
+
+testv			:	all
+					clear
+					valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME) file1 "ls" "cat -e" file2
 
 false			:	all
 					clear
 					./$(NAME) file file
 
-.PHONY			:	all clean fclean re
+.PHONY			:	all clean fclean re test testv

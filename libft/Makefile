@@ -1,4 +1,4 @@
-CC				=	cc -Wall -Wextra -Werror -g
+CC				=	cc -Wall -Wextra -Werror -g -fPIE
 
 NAME			=	libft.a
 
