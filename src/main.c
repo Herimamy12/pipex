@@ -20,7 +20,7 @@ int	main(int argc, char **argv, char **env)
 	if (!data)
 		return (p_error("Sorry!!! Data not created\n"), 2);
 	if (exec_pipex(data, env) == -1)
-		return (p_error("Can't execute"), destroy_data(data), 4);
+		return (p_error("Can't execute\n"), destroy_data(data), 4);
 	destroy_data (data);
 	return (0);
 }
@@ -43,6 +43,9 @@ int	exec_pipex(t_data *data, char **env)
 		if (dup2(data->file1, 0) == -1)
 			p_error("dup2() failed"), exit(-1);
 		execve(data->cmd1->cmd, data->cmd1->arg, env);
+		perror(data->cmd1->cmd);
+		destroy_data (data);
+		exit (4);
 	}
 	wait(NULL);
 	close(fds[1]);
@@ -51,5 +54,6 @@ int	exec_pipex(t_data *data, char **env)
 	if (dup2(data->file2, 1) == -1)
 		return(p_error("dup2() failed"), -1);
 	execve(data->cmd2->cmd, data->cmd2->arg, env);
-	return (0);
+	perror(data->cmd2->cmd);
+	return (-1);
 }

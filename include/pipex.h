@@ -15,8 +15,10 @@
 
 # include <fcntl.h>
 # include <errno.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -70,6 +72,5 @@ int		new_file(char *path, char type);
 // ------------------------EXEC
 //
 int		exec_pipex(t_data *data, char **env);
-
 
 #endif

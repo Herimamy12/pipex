@@ -40,7 +40,7 @@ int	new_file(char *path, char type)
 	if (type == 'R')
 		fd = open(path, O_RDONLY);
 	else
-		fd = open(path, O_WRONLY);
+		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 777);
 	if (fd == -1)
 		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
 	return (fd);
@@ -62,15 +62,11 @@ t_cmd	*new_cmd(char *argv, char **path)
 
 char	**get_arg(char *argv)
 {
-	// char	*tmp;
 	char	**arg;
 
 	arg = ft_split(argv, ' ');
 	if (!arg)
 		return (p_error("Splited arg error\n"), NULL);
-	// tmp = *arg;
-	// arg++;
-	// return (free(tmp), arg);
 	return (arg);
 }
 
