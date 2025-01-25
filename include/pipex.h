@@ -14,11 +14,10 @@
 # define PIPEX_H
 
 # include <errno.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
-# include "../libft/libft.h"
+# include "../libft/include/libft.h"
 
 typedef struct s_cmd
 {
