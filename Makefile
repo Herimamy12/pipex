@@ -13,7 +13,7 @@ OBJ_DIR			=	obj
 
 OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
 
-.SILENT			:
+# .SILENT			:
 
 ${shell mkdir -p ${OBJ_DIR}}
 

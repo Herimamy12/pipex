@@ -19,8 +19,9 @@ int	main(int argc, char **argv, char **env)
 	data = new_data(argc, argv, env);
 	if (!data)
 		return (p_error("Sorry!!! Data not created\n"), 2);
-	if (exec_pipex(data, env) == -1)
-		return (p_error("Can't execute\n"), destroy_data(data), 4);
+	p_data(data);
+	// if (exec_pipex(data, env) == -1)
+	// 	return (p_error("Can't execute\n"), destroy_data(data), 4);
 	destroy_data (data);
 	return (0);
 }
