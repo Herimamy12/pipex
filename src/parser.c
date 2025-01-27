@@ -13,7 +13,7 @@
 #include "../include/pipex.h"
 
 char	*get_cmd_parse(char *argv, char *tmp, char **path);
-void	count_quote(char *argv, int *nbr);
+int		count_quote(char *argv);
 
 t_data	*new_data(int argc, char **argv, char **env)
 {
@@ -44,8 +44,8 @@ int	new_file(char *path, char type)
 	// parse = let_parse(path);
 	if (type == 'R')
 		fd = open(path, O_RDONLY);
-	else
-		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	// else
+	// 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
 		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
 	return (fd);
@@ -63,6 +63,7 @@ t_cmd	*new_cmd(char *argv, char **path)
 	// cmd->cmd = get_cmd(argv, path);
 	cmd->cmd = get_cmd_parse(argv, argv, path);
 	cmd->arg = get_arg(argv);
+	p_cmd("cmd", cmd);
 	if (!cmd->cmd || !cmd->arg)
 		return (destroy_cmd(cmd), NULL);
 	return (cmd);
@@ -73,59 +74,66 @@ t_cmd	*new_cmd(char *argv, char **path)
 
 // }
 
-// char	**get_arg(char *argv)
-// {
-// 	char	**arg;
+char	**get_arg(char *argv)
+{
+	char	**arg;
 
-// 	arg = ft_split(argv, ' ');
-// 	if (!arg)
-// 		return (p_error("Splited arg error\n"), NULL);
-// 	return (arg);
-// }
+	arg = ft_split(argv, ' ');
+	if (!arg)
+		return (p_error("Splited arg error\n"), NULL);
+	return (arg);
+}
 
-// char	*get_cmd(char *argv, char **path)
-// {
-// 	char	*cmd;
-// 	char	**all;
+char	*get_cmd(char *argv, char **path)
+{
+	char	*cmd;
+	char	**all;
 
-// 	all = ft_split(argv, ' ');
-// 	if (!all)
-// 		return (p_error("Splited cmd error\n"), NULL);
-// 	while (*path)
-// 	{
-// 		cmd = ft_strjoin (*path, all[0]);
-// 		if (!access(cmd, X_OK))
-// 			return (destroy_splited(all, all), cmd);
-// 		free (cmd);
-// 		path++;
-// 	}
-// 	cmd = ft_strjoin (all[0], "");
-// 	return (destroy_splited(all, all), cmd);
-// }
+	all = ft_split(argv, ' ');
+	if (!all)
+		return (p_error("Splited cmd error\n"), NULL);
+	while (*path)
+	{
+		cmd = ft_strjoin (*path, all[0]);
+		if (!access(cmd, X_OK))
+			return (destroy_splited(all, all), cmd);
+		free (cmd);
+		path++;
+	}
+	cmd = ft_strjoin (all[0], "");
+	return (destroy_splited(all, all), cmd);
+}
 
 char	*get_cmd_parse(char *argv, char *tmp, char **path)
 {
 	int		last;
 	int		first;
 	int		nbr_quote;
-	// char	*cmd;
+	char	*cmd;
 
-	nbr_quote = 0;
-	count_quote(argv, &nbr_quote);
-	ft_printf("%d\n", nbr_quote);
+	nbr_quote = count_quote(argv);
+	if (!nbr_quote)
+		return (get_cmd(argv, path));
+	if (nbr_quote % 2 != 0)
+		return (p_error(argv), p_error(": quote not closed\n"), NULL);
 	return (NULL);
 	(void)tmp;
 	(void)path;
 	(void)last;
 	(void)first;
+	(void)cmd;
 }
 
-void	count_quote(char *argv, int *nbr)
+int	count_quote(char *argv)
 {
+	int nbr;
+
+	nbr = 0;
 	while (*argv)
 	{
-		// if (*argv == '\'' && nbr)
-			*nbr++;
+		if (*argv == '\'')
+			nbr++;
 		argv++;
 	}
+	return (nbr);
 }
