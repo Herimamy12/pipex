@@ -106,16 +106,19 @@ char	*get_cmd(char *argv, char **path)
 
 char	*get_cmd_parse(char *argv, char *tmp, char **path)
 {
-	int		last;
-	int		first;
 	int		nbr_quote;
+	char	tmp;
 	char	*cmd;
 
 	nbr_quote = count_quote(argv);
-	if (!nbr_quote)
-		return (get_cmd(argv, path));
+	// if (!nbr_quote)
+	// 	return (get_cmd(argv, path));
 	if (nbr_quote % 2 != 0)
 		return (p_error(argv), p_error(": quote not closed\n"), NULL);
+	while (*argv && ft_iswhitespace(*argv))
+		argv++;
+	// while (*argv && !ft_iswhitespace(*argv) && *argv != '\'')
+	// 	cmd
 	return (NULL);
 	(void)tmp;
 	(void)path;
