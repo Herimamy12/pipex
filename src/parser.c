@@ -107,7 +107,7 @@ char	*get_cmd(char *argv, char **path)
 char	*get_cmd_parse(char *argv, char *tmp, char **path)
 {
 	int		nbr_quote;
-	char	tmp;
+	// char	tmp;
 	char	*cmd;
 
 	nbr_quote = count_quote(argv);
@@ -122,8 +122,6 @@ char	*get_cmd_parse(char *argv, char *tmp, char **path)
 	return (NULL);
 	(void)tmp;
 	(void)path;
-	(void)last;
-	(void)first;
 	(void)cmd;
 }
 
