@@ -30,6 +30,8 @@ void	p_splited(char **split)
 
 void	p_cmd(char *title, t_cmd *cmd)
 {
+	if (!cmd)
+		return ;
 	ft_printf("%s->cmd :: %s || %s->arg :: ", title, cmd->cmd, title);
 	p_splited(cmd->arg);
 }
@@ -37,7 +39,9 @@ void	p_cmd(char *title, t_cmd *cmd)
 void	p_data(t_data *data)
 {
 	ft_printf("\n\n\n=======*** DATA ***=======\n");
-	p_cmd("data->cmd1", data->cmd1);
-	p_cmd("data->cmd2", data->cmd2);
+	if (data->cmd1)
+		p_cmd("data->cmd1", data->cmd1);
+	if (data->cmd2)
+		p_cmd("data->cmd2", data->cmd2);
 	ft_printf("=======*** PIPX ***=======\n\n\n");
 }

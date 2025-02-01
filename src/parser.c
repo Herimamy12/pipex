@@ -107,7 +107,7 @@ char	*get_cmd(char *argv, char **path)
 char	*get_cmd_parse(char *argv, char *tmp, char **path)
 {
 	int		nbr_quote;
-	// char	tmp;
+	char	tmp_char;
 	char	*cmd;
 
 	nbr_quote = count_quote(argv);
@@ -117,9 +117,17 @@ char	*get_cmd_parse(char *argv, char *tmp, char **path)
 		return (p_error(argv), p_error(": quote not closed\n"), NULL);
 	while (*argv && ft_iswhitespace(*argv))
 		argv++;
-	// while (*argv && !ft_iswhitespace(*argv) && *argv != '\'')
-	// 	cmd
-	return (NULL);
+	if (*argv == '\'')
+		argv++;
+	while (*argv && !ft_iswhitespace(*argv))
+	{
+		if (*argv == '\'')
+			break ;
+		tmp_char = *argv;
+		cmd = ft_strjoin_get(cmd, &tmp_char);
+		argv++;
+	}
+	return (cmd);
 	(void)tmp;
 	(void)path;
 	(void)cmd;
