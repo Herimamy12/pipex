@@ -12,14 +12,6 @@
 
 #include "../include/pipex.h"
 
-
-
-t_cmd	*get_all_cmd(int argc, char **argv, char **path);
-void	cmd_add_back(t_cmd **lst, t_cmd *new);
-t_cmd	*last_cmd(t_cmd *lst);
-
-
-
 t_data	*new_data(int argc, char **argv, char **env)
 {
 	t_data	*data;

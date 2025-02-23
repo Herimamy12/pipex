@@ -72,6 +72,9 @@ int		new_file(char *path, char type);
 t_list	*get_list(char *argv, char *tmp);
 int		parse_quote(char *argv, char **str, char set);
 void	add_list(t_list **lst, char **str);
+t_cmd	*get_all_cmd(int argc, char **argv, char **path);
+void	cmd_add_back(t_cmd **lst, t_cmd *new);
+t_cmd	*last_cmd(t_cmd *lst);
 
 //
 // ------------------------EXEC
