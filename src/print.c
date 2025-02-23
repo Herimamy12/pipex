@@ -39,10 +39,10 @@ void	p_cmd(char *title, t_cmd *cmd)
 void	p_data(t_data *data)
 {
 	ft_printf("\n\n\n=======*** DATA ***=======\n");
-	if (data->cmd1)
-		p_cmd("data->cmd1", data->cmd1);
-	if (data->cmd2)
-		p_cmd("data->cmd2", data->cmd2);
+	if (data->cmd)
+		p_cmd("data->cmd1", data->cmd);
+	if (data->cmd->next)
+		p_cmd("data->cmd2", data->cmd->next);
 	ft_printf("=======*** PIPX ***=======\n\n\n");
 }
 

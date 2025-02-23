@@ -29,14 +29,14 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			**arg;
-	t_list			*lst;
+	struct s_cmd	*next;
 }					t_cmd;
 
 typedef struct s_data
 {
 	int		file1;
 	int		file2;
-	t_list	*cmd;
+	t_cmd	*cmd;
 	char	**path;
 }			t_data;
 
@@ -46,6 +46,7 @@ typedef struct s_data
 void	destroy_cmd(t_cmd *cmd);
 void	destroy_data(t_data *data);
 void	destroy_splited(char **split, char **tmp);
+void	cmd_clear(t_cmd **lst);
 
 //
 // ------------------------DEBUG FUNCTION && ERROR

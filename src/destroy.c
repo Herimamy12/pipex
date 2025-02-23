@@ -17,13 +17,29 @@ void	destroy_data(t_data *data)
 	if (!data)
 		return ;
 	destroy_splited (data->path, data->path);
-	destroy_cmd (data->cmd1);
-	destroy_cmd (data->cmd2);
+	if (data->cmd)
+		cmd_clear(&data->cmd);
 	if (data->file1 != -1)
 		close (data->file1);
 	if (data->file2 != -1)
 		close (data->file2);
 	free (data);
+}
+
+void	cmd_clear(t_cmd **lst)
+{
+	t_cmd	*lsttmp;
+	t_cmd	*tmp;
+
+	tmp = NULL;
+	lsttmp = *lst;
+	while (lsttmp)
+	{
+		tmp = lsttmp->next;
+		destroy_cmd(lsttmp);
+		lsttmp = tmp;
+	}
+	*lst = NULL;
 }
 
 void	destroy_splited(char **split, char **tmp)
@@ -42,8 +58,6 @@ void	destroy_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
-	if (cmd->lst)
-		ft_lstclear(&cmd->lst, free);
 	if (cmd->cmd)
 		free(cmd->cmd);
 	if (cmd->arg)

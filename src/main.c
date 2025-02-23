@@ -39,16 +39,17 @@ int	exec_pipex(t_data *data, char **env)
 	{
 		if (set_stream (fds, 1, data->file1))
 			return (-1);
-		execve(data->cmd1->cmd, data->cmd1->arg, env);
-		perror(data->cmd1->cmd);
+		execve(data->cmd->cmd, data->cmd->arg, env);
+		perror(data->cmd->cmd);
 		destroy_data (data);
 		exit (4);
 	}
 	wait(NULL);
 	if (set_stream (fds, 0, data->file2))
 		return (-1);
-	execve(data->cmd2->cmd, data->cmd2->arg, env);
-	perror(data->cmd2->cmd);
+	// data->cmd = data->cmd->next;
+	execve(data->cmd->next->cmd, data->cmd->next->arg, env);
+	perror(data->cmd->next->cmd);
 	return (-1);
 }
 

@@ -12,6 +12,14 @@
 
 #include "../include/pipex.h"
 
+
+
+t_cmd	*get_all_cmd(int argc, char **argv, char **path);
+void	cmd_add_back(t_cmd **lst, t_cmd *new);
+t_cmd	*last_cmd(t_cmd *lst);
+
+
+
 t_data	*new_data(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -25,25 +33,43 @@ t_data	*new_data(int argc, char **argv, char **env)
 	if (!data->path)
 		return (free(data), NULL);
 	data->file1 = new_file(argv[1], 'R');
-	data->file2 = new_file(argv[argc--], 'W');
-	data->cmd = get_all_cmd(argc, argv, data->path);
+	data->file2 = new_file(argv[--argc], 'W');
+	data->cmd = get_all_cmd(argc, ++argv, data->path);
 	if (!data->cmd || data->file1 == -1 || data->file2 == -1)
 		return (destroy_data(data), NULL);
 	return (data);
 }
 
-t_list	*get_all_cmd(int argc, char **argv, char **path)
+t_cmd	*get_all_cmd(int argc, char **argv, char **path)
 {
 	int		index;
-	t_list	*cmd;
+	t_cmd	*cmd;
 
 	index = 1;
+	cmd = NULL;
 	while (index < argc)
 	{
-		ft_lstadd_back(&cmd, ft_lstnew(new_cmd(argv[index], path)));
+		cmd_add_back(&cmd, new_cmd(argv[index], path));
 		index++;
 	}
-	
+	return (cmd);
+}
+
+void	cmd_add_back(t_cmd **lst, t_cmd *new)
+{
+	if (new != NULL && lst[0] != NULL)
+		last_cmd(lst[0])->next = new;
+	else if (lst[0] == NULL)
+		lst[0] = new;
+}
+
+t_cmd	*last_cmd(t_cmd *lst)
+{
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
 }
 
 int	new_file(char *path, char type)
@@ -62,16 +88,18 @@ int	new_file(char *path, char type)
 t_cmd	*new_cmd(char *argv, char **path)
 {
 	t_cmd	*cmd;
+	t_list	*lst;
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (p_error("Alloc cmd error\n"), NULL);
-	cmd->lst = get_list(argv, "");
-	cmd->arg = get_arg(cmd->lst);
+	lst = get_list(argv, "");
+	cmd->arg = get_arg(lst);
 	cmd->cmd = get_cmd(cmd->arg[0], path);
 	if (!cmd->cmd || !cmd->arg)
-		return (destroy_cmd(cmd), NULL);
-	return (cmd);
+		return (destroy_cmd(cmd), ft_lstclear(&lst, free), NULL);
+	cmd->next = NULL;
+	return (ft_lstclear(&lst, free), cmd);
 }
 
 t_list	*get_list(char *argv, char *tmp)
