@@ -5,7 +5,7 @@ LIBFT			=	./libft/libft.a
 LIBFT_DIR		=	./libft/
 
 SRC				=	./src/main.c ./src/parser.c ./src/print.c \
-					./src/get_path.c destroy.c
+					./src/get_path.c ./src/destroy.c
 
 CC				=	gcc -Wall -Werror -Wextra -g
 
@@ -18,7 +18,7 @@ OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
 ${shell mkdir -p ${OBJ_DIR}}
 
 ${OBJ_DIR}/%.o	:	./src/%.c
-					${CC} ${CFLAGS} -o $@ -c $<
+					${CC} -o $@ -c $<
 
 all				:	$(NAME)
 
@@ -40,16 +40,4 @@ fclean			:	clean
 re				:	fclean
 					make --no-print-directory -C ./
 
-test			:	all
-					clear
-					./$(NAME) file1 "ls" "cat -e" file2
-
-testv			:	all
-					clear
-					valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME) file1 "ls" "cat -e" file2
-
-false			:	all
-					clear
-					./$(NAME) file file
-
-.PHONY			:	all clean fclean re test testv
+.PHONY			:	all clean fclean re
