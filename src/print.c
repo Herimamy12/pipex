@@ -45,3 +45,14 @@ void	p_data(t_data *data)
 		p_cmd("data->cmd2", data->cmd2);
 	ft_printf("=======*** PIPX ***=======\n\n\n");
 }
+
+void	p_list(t_list *lst)
+{
+	ft_printf("\nbegin of list\n");
+	while (lst)
+	{
+		ft_printf("%s\n", (char *)lst->content);
+		lst = lst->next;
+	}
+	ft_printf("end of list\n\n");
+}

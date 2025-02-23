@@ -29,6 +29,7 @@ typedef struct s_cmd
 {
 	char	*cmd;
 	char	**arg;
+	t_list	*lst;
 }			t_cmd;
 
 typedef struct s_data
@@ -54,6 +55,7 @@ void	p_error(char *str);
 void	p_splited(char **split);
 void	p_cmd(char *title, t_cmd *cmd);
 void	p_data(t_data *data);
+void	p_list(t_list *lst);
 
 //
 // ------------------------PARSER
@@ -67,6 +69,9 @@ char	*get_cmd(char *argv, char **path);
 t_cmd	*new_cmd(char *argv, char **path);
 char	**get_arg(char *argv);
 int		new_file(char *path, char type);
+t_list	*get_list(char *argv, char *tmp);
+int		parse_quote(char *argv, char **str, char set);
+void	add_list(t_list **lst, char **str);
 
 //
 // ------------------------EXEC

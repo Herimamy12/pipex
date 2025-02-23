@@ -13,7 +13,7 @@ OBJ_DIR			=	obj
 
 OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
 
-# .SILENT			:
+.SILENT			:
 
 ${shell mkdir -p ${OBJ_DIR}}
 
@@ -23,21 +23,22 @@ ${OBJ_DIR}/%.o	:	./src/%.c
 all				:	$(NAME)
 
 $(NAME)			:	$(OBJ)
-					make -C $(LIBFT_DIR)
+					make --no-print-directory -C $(LIBFT_DIR)
 					$(CC) -o $@ $^ $(LIBFT)
+					echo "Pipex :: Compilation successfully."
 
 clean			:
-					make clean -C ${LIBFT_DIR}
+					make clean --no-print-directory -C ${LIBFT_DIR}
 					rm -rf $(OBJ_DIR)
-					clear
+					echo "Pipex :: Clean successfully."
 
 fclean			:	clean
-					make fclean -C ${LIBFT_DIR}
+					make fclean --no-print-directory -C ${LIBFT_DIR}
 					rm -f $(NAME)
-					clear
+					echo "Pipex :: Fclean successfully."
 
 re				:	fclean
-					make -C ./
+					make --no-print-directory -C ./
 
 test			:	all
 					clear

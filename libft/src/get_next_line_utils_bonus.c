@@ -11,12 +11,15 @@
 /* ************************************************************************** */
 
 #include "../include/get_next_line_bonus.h"
+#include <stdio.h>
 
 size_t	ft_strlen_get(const char *str)
 {
 	size_t	len;
 
 	len = 0;
+	if (!str)
+		return (len);
 	while (str[len])
 		len++;
 	return (len);
@@ -52,8 +55,6 @@ char	*ft_strjoin_get(char *stash, char *buff)
 	ls1 = ft_strlen_get(stash);
 	ls2 = ft_strlen_get(buff);
 	str = ft_calloc_get(sizeof(char), (ls2 + ls1 + 1));
-	if (str == NULL)
-		return (NULL);
 	i = 0;
 	while (i < ls1)
 	{
@@ -67,7 +68,8 @@ char	*ft_strjoin_get(char *stash, char *buff)
 		i++;
 	}
 	str[i + ls1] = '\0';
-	free(stash);
+	if (stash)
+		free(stash);
 	return (str);
 }
 

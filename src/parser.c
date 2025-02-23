@@ -12,9 +12,6 @@
 
 #include "../include/pipex.h"
 
-char	*get_cmd_parse(char *argv, char *tmp, char **path);
-int		count_quote(char *argv);
-
 t_data	*new_data(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -38,41 +35,97 @@ t_data	*new_data(int argc, char **argv, char **env)
 
 int	new_file(char *path, char type)
 {
-	int		fd;
+	// int		fd;
 	// char	*parse;
 
 	// parse = let_parse(path);
-	if (type == 'R')
-		fd = open(path, O_RDONLY);
+	// if (type == 'R')
+	// 	fd = open(path, O_RDONLY);
 	// else
 	// 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	if (fd == -1)
-		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
-	return (fd);
+	// if (fd == -1)
+		// return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
+	// return (fd);
+	return (12);
+	(void) path;
+	(void) type;
 }
 
 t_cmd	*new_cmd(char *argv, char **path)
 {
-	// char	*parse;
 	t_cmd	*cmd;
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (p_error("Alloc cmd error\n"), NULL);
-	// parse = let_parse(argv);
-	// cmd->cmd = get_cmd(argv, path);
-	cmd->cmd = get_cmd_parse(argv, argv, path);
+	cmd->cmd = get_cmd(argv, path);
+	cmd->lst = get_list(argv, "");
+	p_list(cmd->lst);
 	cmd->arg = get_arg(argv);
-	p_cmd("cmd", cmd);
+	// p_cmd("cmd", cmd);
 	if (!cmd->cmd || !cmd->arg)
 		return (destroy_cmd(cmd), NULL);
 	return (cmd);
+	(void) path;
 }
 
-// char	*let_parse(char *str)
-// {
+t_list	*get_list(char *argv, char *tmp)
+{
+	char	*str;
+	t_list	*lst;
 
-// }
+	str = NULL;
+	lst = NULL;
+	while (*argv)
+	{
+		if (ft_iswhitespace(*argv))
+		{
+			if (argv++ && str)
+				add_list(&lst, &str);
+		}
+		else if (*argv == '\'' || *argv == '"')
+			argv += parse_quote(argv, &str, *argv);
+		else
+		{
+			tmp = ft_substr(argv, 0, 1);
+			str = ft_strjoin_get(str, tmp);
+			free (tmp);
+			argv++;
+		}
+	}
+	if (str)
+		add_list(&lst, &str);
+	return (lst);
+}
+
+void	add_list(t_list **lst, char **str)
+{
+	ft_lstadd_back(lst, ft_lstnew(ft_strdup(*str)));
+	free(*str);
+	*str = NULL;
+}
+
+int	parse_quote(char *argv, char **str, char set)
+{
+	int		len;
+	char	*tmp;
+	char	*index;
+
+	if (set == '\'')
+		index = ft_strchr(++argv, '\'');
+	else
+		index = ft_strchr(++argv, '"');
+	if (!index)
+	{
+		p_error("WARNING: Verify quote not closed\n");
+		*str = ft_strjoin_get(*str, "'");
+		return (1);
+	}
+	len = index - argv;
+	tmp = ft_substr(argv, 0, len);
+	*str = ft_strjoin_get(*str, tmp);
+	return (free(tmp), len + 2);
+}
 
 char	**get_arg(char *argv)
 {
@@ -102,47 +155,4 @@ char	*get_cmd(char *argv, char **path)
 	}
 	cmd = ft_strjoin (all[0], "");
 	return (destroy_splited(all, all), cmd);
-}
-
-char	*get_cmd_parse(char *argv, char *tmp, char **path)
-{
-	int		nbr_quote;
-	char	tmp_char;
-	char	*cmd;
-
-	nbr_quote = count_quote(argv);
-	// if (!nbr_quote)
-	// 	return (get_cmd(argv, path));
-	if (nbr_quote % 2 != 0)
-		return (p_error(argv), p_error(": quote not closed\n"), NULL);
-	while (*argv && ft_iswhitespace(*argv))
-		argv++;
-	if (*argv == '\'')
-		argv++;
-	while (*argv && !ft_iswhitespace(*argv))
-	{
-		if (*argv == '\'')
-			break ;
-		tmp_char = *argv;
-		cmd = ft_strjoin_get(cmd, &tmp_char);
-		argv++;
-	}
-	return (cmd);
-	(void)tmp;
-	(void)path;
-	(void)cmd;
-}
-
-int	count_quote(char *argv)
-{
-	int nbr;
-
-	nbr = 0;
-	while (*argv)
-	{
-		if (*argv == '\'')
-			nbr++;
-		argv++;
-	}
-	return (nbr);
 }

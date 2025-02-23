@@ -30,12 +30,15 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJ)
 					ar rsc $@ $^
+					echo "Libft :: Compilation successfully."
 
 clean			:
 					rm -rf $(OBJ_DIR)
+					echo "Libft :: Clean successfully."
 
 fclean			:	clean
 					rm -f $(NAME)
+					echo "Libft :: Fclean successfully."
 
 re				:	fclean all
 
