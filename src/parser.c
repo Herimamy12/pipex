@@ -16,21 +16,34 @@ t_data	*new_data(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
-	if (argc != 5)
-		return (p_error("Argument must be four\n"), NULL);
+	if (argc < 5)
+		return (p_error("Argument must be at least four\n"), NULL);
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
 		return (p_error("Alloc data error\n"), NULL);
 	data->path = get_path(env);
 	if (!data->path)
 		return (free(data), NULL);
-	data->cmd1 = new_cmd(argv[2], data->path);
-	data->cmd2 = new_cmd(argv[3], data->path);
 	data->file1 = new_file(argv[1], 'R');
-	data->file2 = new_file(argv[4], 'W');
-	if (!data->cmd1 || !data->cmd2 || data->file1 == -1 || data->file2 == -1)
+	data->file2 = new_file(argv[argc--], 'W');
+	data->cmd = get_all_cmd(argc, argv, data->path);
+	if (!data->cmd || data->file1 == -1 || data->file2 == -1)
 		return (destroy_data(data), NULL);
 	return (data);
+}
+
+t_list	*get_all_cmd(int argc, char **argv, char **path)
+{
+	int		index;
+	t_list	*cmd;
+
+	index = 1;
+	while (index < argc)
+	{
+		ft_lstadd_back(&cmd, ft_lstnew(new_cmd(argv[index], path)));
+		index++;
+	}
+	
 }
 
 int	new_file(char *path, char type)

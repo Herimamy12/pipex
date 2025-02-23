@@ -27,17 +27,16 @@
 
 typedef struct s_cmd
 {
-	char	*cmd;
-	char	**arg;
-	t_list	*lst;
-}			t_cmd;
+	char			*cmd;
+	char			**arg;
+	t_list			*lst;
+}					t_cmd;
 
 typedef struct s_data
 {
 	int		file1;
 	int		file2;
-	t_cmd	*cmd1;
-	t_cmd	*cmd2;
+	t_list	*cmd;
 	char	**path;
 }			t_data;
 
