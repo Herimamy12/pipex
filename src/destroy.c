@@ -42,8 +42,6 @@ void	destroy_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
-	if (cmd->lst)
-		ft_lstclear(&cmd->lst, free);
 	if (cmd->cmd)
 		free(cmd->cmd);
 	if (cmd->arg)

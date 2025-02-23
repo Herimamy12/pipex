@@ -49,16 +49,17 @@ int	new_file(char *path, char type)
 t_cmd	*new_cmd(char *argv, char **path)
 {
 	t_cmd	*cmd;
+	t_list	*lst;
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (p_error("Alloc cmd error\n"), NULL);
-	cmd->lst = get_list(argv, "");
-	cmd->arg = get_arg(cmd->lst);
+	lst = get_list(argv, "");
+	cmd->arg = get_arg(lst);
 	cmd->cmd = get_cmd(cmd->arg[0], path);
 	if (!cmd->cmd || !cmd->arg)
-		return (destroy_cmd(cmd), NULL);
-	return (cmd);
+		return (destroy_cmd(cmd), ft_lstclear(&lst, free), NULL);
+	return (ft_lstclear(&lst, free), cmd);
 }
 
 t_list	*get_list(char *argv, char *tmp)

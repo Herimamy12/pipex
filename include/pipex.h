@@ -29,7 +29,6 @@ typedef struct s_cmd
 {
 	char	*cmd;
 	char	**arg;
-	t_list	*lst;
 }			t_cmd;
 
 typedef struct s_data
