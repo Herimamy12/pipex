@@ -67,7 +67,7 @@ char	**get_path(char **env);
 char	**add_suffix(char **path, char **tmp);
 char	*get_cmd(char *argv, char **path);
 t_cmd	*new_cmd(char *argv, char **path);
-char	**get_arg(char *argv);
+char	**get_arg(t_list *lst);
 int		new_file(char *path, char type);
 t_list	*get_list(char *argv, char *tmp);
 int		parse_quote(char *argv, char **str, char set);

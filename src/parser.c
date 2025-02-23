@@ -35,20 +35,15 @@ t_data	*new_data(int argc, char **argv, char **env)
 
 int	new_file(char *path, char type)
 {
-	// int		fd;
-	// char	*parse;
+	int		fd;
 
-	// parse = let_parse(path);
-	// if (type == 'R')
-	// 	fd = open(path, O_RDONLY);
-	// else
-	// 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	// if (fd == -1)
-		// return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
-	// return (fd);
-	return (12);
-	(void) path;
-	(void) type;
+	if (type == 'R')
+		fd = open(path, O_RDONLY);
+	else
+		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (fd == -1)
+		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
+	return (fd);
 }
 
 t_cmd	*new_cmd(char *argv, char **path)
@@ -58,15 +53,12 @@ t_cmd	*new_cmd(char *argv, char **path)
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (p_error("Alloc cmd error\n"), NULL);
-	cmd->cmd = get_cmd(argv, path);
 	cmd->lst = get_list(argv, "");
-	p_list(cmd->lst);
-	cmd->arg = get_arg(argv);
-	// p_cmd("cmd", cmd);
+	cmd->arg = get_arg(cmd->lst);
+	cmd->cmd = get_cmd(cmd->arg[0], path);
 	if (!cmd->cmd || !cmd->arg)
 		return (destroy_cmd(cmd), NULL);
 	return (cmd);
-	(void) path;
 }
 
 t_list	*get_list(char *argv, char *tmp)
@@ -127,32 +119,37 @@ int	parse_quote(char *argv, char **str, char set)
 	return (free(tmp), len + 2);
 }
 
-char	**get_arg(char *argv)
+char	**get_arg(t_list *lst)
 {
+	int		len;
 	char	**arg;
 
-	arg = ft_split(argv, ' ');
+	len = ft_lstsize(lst);
+	arg = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!arg)
-		return (p_error("Splited arg error\n"), NULL);
+		return (p_error("Alloc arg error\n"), NULL);
+	len = 0;
+	while (lst)
+	{
+		arg[len++] = ft_strdup(lst->content);
+		lst = lst->next;
+	}
+	arg[len] = NULL;
 	return (arg);
 }
 
 char	*get_cmd(char *argv, char **path)
 {
 	char	*cmd;
-	char	**all;
 
-	all = ft_split(argv, ' ');
-	if (!all)
-		return (p_error("Splited cmd error\n"), NULL);
 	while (*path)
 	{
-		cmd = ft_strjoin (*path, all[0]);
+		cmd = ft_strjoin (*path, argv);
 		if (!access(cmd, X_OK))
-			return (destroy_splited(all, all), cmd);
+			return (cmd);
 		free (cmd);
 		path++;
 	}
-	cmd = ft_strjoin (all[0], "");
-	return (destroy_splited(all, all), cmd);
+	cmd = ft_strdup(argv);
+	return (cmd);
 }
