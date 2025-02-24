@@ -26,42 +26,10 @@ t_data	*new_data(int argc, char **argv, char **env)
 		return (free(data), NULL);
 	data->file1 = new_file(argv[1], 'R');
 	data->file2 = new_file(argv[--argc], 'W');
-	data->cmd = get_all_cmd(argc, ++argv, data->path);
+	data->cmd = get_all_cmd(--argc, ++argv, data->path);
 	if (!data->cmd || data->file1 == -1 || data->file2 == -1)
 		return (destroy_data(data), NULL);
 	return (data);
-}
-
-t_cmd	*get_all_cmd(int argc, char **argv, char **path)
-{
-	int		index;
-	t_cmd	*cmd;
-
-	index = 1;
-	cmd = NULL;
-	while (index < argc)
-	{
-		cmd_add_back(&cmd, new_cmd(argv[index], path));
-		index++;
-	}
-	return (cmd);
-}
-
-void	cmd_add_back(t_cmd **lst, t_cmd *new)
-{
-	if (new != NULL && lst[0] != NULL)
-		last_cmd(lst[0])->next = new;
-	else if (lst[0] == NULL)
-		lst[0] = new;
-}
-
-t_cmd	*last_cmd(t_cmd *lst)
-{
-	if (lst == NULL)
-		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
 }
 
 int	new_file(char *path, char type)
@@ -94,64 +62,6 @@ t_cmd	*new_cmd(char *argv, char **path)
 	return (ft_lstclear(&lst, free), cmd);
 }
 
-t_list	*get_list(char *argv, char *tmp)
-{
-	char	*str;
-	t_list	*lst;
-
-	str = NULL;
-	lst = NULL;
-	while (*argv)
-	{
-		if (ft_iswhitespace(*argv))
-		{
-			if (argv++ && str)
-				add_list(&lst, &str);
-		}
-		else if (*argv == '\'' || *argv == '"')
-			argv += parse_quote(argv, &str, *argv);
-		else
-		{
-			tmp = ft_substr(argv, 0, 1);
-			str = ft_strjoin_get(str, tmp);
-			free (tmp);
-			argv++;
-		}
-	}
-	if (str)
-		add_list(&lst, &str);
-	return (lst);
-}
-
-void	add_list(t_list **lst, char **str)
-{
-	ft_lstadd_back(lst, ft_lstnew(ft_strdup(*str)));
-	free(*str);
-	*str = NULL;
-}
-
-int	parse_quote(char *argv, char **str, char set)
-{
-	int		len;
-	char	*tmp;
-	char	*index;
-
-	if (set == '\'')
-		index = ft_strchr(++argv, '\'');
-	else
-		index = ft_strchr(++argv, '"');
-	if (!index)
-	{
-		p_error("WARNING: Verify quote not closed\n");
-		*str = ft_strjoin_get(*str, "'");
-		return (1);
-	}
-	len = index - argv;
-	tmp = ft_substr(argv, 0, len);
-	*str = ft_strjoin_get(*str, tmp);
-	return (free(tmp), len + 2);
-}
-
 char	**get_arg(t_list *lst)
 {
 	int		len;
@@ -169,20 +79,4 @@ char	**get_arg(t_list *lst)
 	}
 	arg[len] = NULL;
 	return (arg);
-}
-
-char	*get_cmd(char *argv, char **path)
-{
-	char	*cmd;
-
-	while (*path)
-	{
-		cmd = ft_strjoin (*path, argv);
-		if (!access(cmd, X_OK))
-			return (cmd);
-		free (cmd);
-		path++;
-	}
-	cmd = ft_strdup(argv);
-	return (cmd);
 }

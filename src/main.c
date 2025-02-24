@@ -29,7 +29,9 @@ int	exec_pipex(t_data *data, char **env)
 {
 	int		fds[2];
 	pid_t	pid;
+	t_cmd	*cmd;
 
+	cmd = data->cmd;
 	if (pipe(fds) == -1)
 		return (p_error ("pipe() failed"), -1);
 	pid = fork();
@@ -47,8 +49,7 @@ int	exec_pipex(t_data *data, char **env)
 	wait(NULL);
 	if (set_stream (fds, 0, data->file2))
 		return (-1);
-	// data->cmd = data->cmd->next;
-	execve(data->cmd->next->cmd, data->cmd->next->arg, env);
+	execve(last_cmd(data->cmd)->cmd, last_cmd(data->cmd)->arg, env);
 	perror(data->cmd->next->cmd);
 	return (-1);
 }

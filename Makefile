@@ -5,7 +5,8 @@ LIBFT			=	./libft/libft.a
 LIBFT_DIR		=	./libft/
 
 SRC				=	./src/main.c ./src/parser.c ./src/print.c \
-					./src/get_path.c ./src/destroy.c
+					./src/get_path.c ./src/destroy.c ./src/get_cmd.c \
+					./src/quote.c
 
 CC				=	gcc -Wall -Werror -Wextra -g
 
@@ -34,7 +35,7 @@ clean			:
 
 fclean			:	clean
 					make fclean --no-print-directory -C ${LIBFT_DIR}
-					rm -f $(NAME)
+					rm -f $(NAME) file
 					echo "Pipex :: Fclean successfully."
 
 re				:	fclean
