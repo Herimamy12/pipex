@@ -80,6 +80,7 @@ t_cmd	*last_cmd(t_cmd *lst);
 // ------------------------EXEC
 //
 int		exec_pipex(t_data *data, char **env);
-int		set_stream(int *fds, int fd, int file);
+int		exec_in_child(t_cmd *cmd, char **env, t_data *data);
+int		set_stream(int *fds, int stream);
 
 #endif
