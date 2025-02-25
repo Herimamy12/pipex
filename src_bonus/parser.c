@@ -14,9 +14,14 @@
 
 t_data	*new_data(int argc, char **argv, char **env)
 {
+	size_t	len;
+
+	len = 8;
 	if (argc < 5)
 		return (p_error("Argument must be at least four\n"), NULL);
-	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
+	if (ft_strlen(argv[1]) > len)
+		len = ft_strlen(argv[1]);
+	if (!ft_strncmp(argv[1], "here_doc", len))
 		return (here_data(argc, argv, env));
 	return (norm_data(argc, argv, env));
 }
@@ -64,16 +69,23 @@ t_data	*here_data(int argc, char **argv, char **env)
 
 void	here_doc(int *fds, char *lim)
 {
+	size_t	len;
 	char	*buff;
 
 	if (pipe(fds) == -1)
 		return (p_error ("pipe() here_doc error\n"));
+	len = ft_strlen(lim);
 	buff = get_next_line(0);
-	while (ft_strncmp(buff, lim, ft_strlen(buff) - 1))
+	if (ft_strlen(buff) - 1 > len)
+		len = ft_strlen(buff) - 1;
+	while (ft_strncmp(buff, lim, len))
 	{
 		ft_putstr_fd(buff, fds[1]);
 		free(buff);
+		len = ft_strlen(lim);
 		buff = get_next_line(0);
+		if (ft_strlen(buff) - 1 > len)
+			len = ft_strlen(buff) - 1;
 	}
 	free(buff);
 	close(fds[1]);
