@@ -34,6 +34,8 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
+	int		hd;
+	int		fds[2];
 	int		file1;
 	int		file2;
 	t_cmd	*cmd;

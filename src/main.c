@@ -30,7 +30,9 @@ int	exec_pipex(t_data *data, char **env)
 	t_cmd	*cmd;
 
 	cmd = data->cmd;
-	if (dup2(data->file1, 0) == -1)
+	if (!data->hd && dup2(data->file1, 0) == -1)
+		return (p_error("Dup input error\n"), -1);
+	else if (data->hd && dup2(data->fds[0], 0) == -1)
 		return (p_error("Dup input error\n"), -1);
 	while (cmd)
 	{
