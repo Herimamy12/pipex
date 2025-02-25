@@ -77,6 +77,9 @@ void	add_list(t_list **lst, char **str);
 t_cmd	*get_all_cmd(int argc, char **argv, char **path);
 void	cmd_add_back(t_cmd **lst, t_cmd *new);
 t_cmd	*last_cmd(t_cmd *lst);
+void	here_doc(int *fds, char *lim);
+t_data	*norm_data(int argc, char **argv, char **env);
+t_data	*here_data(int argc, char **argv, char **env);
 
 //
 // ------------------------EXEC

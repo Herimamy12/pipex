@@ -12,48 +12,11 @@
 
 #include "../include/pipex.h"
 
-void	here_doc(int *fds, char *lim);
-t_data	*norm_data(int argc, char **argv, char **env);
-t_data	*here_data(int argc, char **argv, char **env);
-
-// t_data	*new_data(int argc, char **argv, char **env)
-// {
-// 	t_data	*data;
-
-// 	if (argc < 5)
-// 		return (p_error("Argument must be at least four\n"), NULL);
-// 	data = (t_data *)malloc(sizeof(t_data));
-// 	if (!data)
-// 		return (p_error("Alloc data error\n"), NULL);
-// 	data->hd = 0;
-// 	data->path = get_path(env);
-// 	if (!data->path)
-// 		return (free(data), NULL);
-// 	if (ft_strncmp(argv[1], "here_doc", 8))
-// 	{
-// 		data->file1 = new_file(argv[1], 'R');
-// 		data->file2 = new_file(argv[--argc], 'W');
-// 	}
-// 	else
-// 	{
-// 		data->hd = 1;
-// 		data->file1 = 0;
-// 		data->file2 = new_file(argv[--argc], 'A');
-// 		here_doc(data->fds, argv[2]);
-// 		argv++;
-// 		argc--;
-// 	}
-// 	data->cmd = get_all_cmd(--argc, ++argv, data->path);
-// 	if (!data->cmd || data->file1 == -1 || data->file2 == -1)
-// 		return (destroy_data(data), NULL);
-// 	return (data);
-// }
-
 t_data	*new_data(int argc, char **argv, char **env)
 {
 	if (argc < 5)
 		return (p_error("Argument must be at least four\n"), NULL);
-	if (!ft_strncmp(argv[1], "here_doc", 8))
+	if (!ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1])))
 		return (here_data(argc, argv, env));
 	return (norm_data(argc, argv, env));
 }
@@ -129,40 +92,4 @@ int	new_file(char *path, char type)
 	if (fd == -1)
 		return (p_error("Can't open "), p_error(path), p_error("\n"), fd);
 	return (fd);
-}
-
-t_cmd	*new_cmd(char *argv, char **path)
-{
-	t_cmd	*cmd;
-	t_list	*lst;
-
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (p_error("Alloc cmd error\n"), NULL);
-	lst = get_list(argv, "");
-	cmd->arg = get_arg(lst);
-	cmd->cmd = get_cmd(cmd->arg[0], path);
-	if (!cmd->cmd || !cmd->arg)
-		return (destroy_cmd(cmd), ft_lstclear(&lst, free), NULL);
-	cmd->next = NULL;
-	return (ft_lstclear(&lst, free), cmd);
-}
-
-char	**get_arg(t_list *lst)
-{
-	int		len;
-	char	**arg;
-
-	len = ft_lstsize(lst);
-	arg = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!arg)
-		return (p_error("Alloc arg error\n"), NULL);
-	len = 0;
-	while (lst)
-	{
-		arg[len++] = ft_strdup(lst->content);
-		lst = lst->next;
-	}
-	arg[len] = NULL;
-	return (arg);
 }

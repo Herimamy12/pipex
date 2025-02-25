@@ -69,3 +69,39 @@ int	parse_quote(char *argv, char **str, char set)
 	*str = ft_strjoin_get(*str, tmp);
 	return (free(tmp), len + 2);
 }
+
+char	**get_arg(t_list *lst)
+{
+	int		len;
+	char	**arg;
+
+	len = ft_lstsize(lst);
+	arg = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!arg)
+		return (p_error("Alloc arg error\n"), NULL);
+	len = 0;
+	while (lst)
+	{
+		arg[len++] = ft_strdup(lst->content);
+		lst = lst->next;
+	}
+	arg[len] = NULL;
+	return (arg);
+}
+
+t_cmd	*new_cmd(char *argv, char **path)
+{
+	t_cmd	*cmd;
+	t_list	*lst;
+
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (p_error("Alloc cmd error\n"), NULL);
+	lst = get_list(argv, "");
+	cmd->arg = get_arg(lst);
+	cmd->cmd = get_cmd(cmd->arg[0], path);
+	if (!cmd->cmd || !cmd->arg)
+		return (destroy_cmd(cmd), ft_lstclear(&lst, free), NULL);
+	cmd->next = NULL;
+	return (ft_lstclear(&lst, free), cmd);
+}
