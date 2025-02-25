@@ -17,8 +17,6 @@ t_data	*new_data(int argc, char **argv, char **env)
 	size_t	len;
 
 	len = 8;
-	if (argc < 5)
-		return (p_error("Argument must be at least four\n"), NULL);
 	if (ft_strlen(argv[1]) > len)
 		len = ft_strlen(argv[1]);
 	if (!ft_strncmp(argv[1], "here_doc", len))
@@ -30,6 +28,8 @@ t_data	*norm_data(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
+	if (argc < 5)
+		return (p_error("Argument must be at least four\n"), NULL);
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
 		return (p_error("Alloc data error\n"), NULL);
@@ -49,6 +49,8 @@ t_data	*here_data(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
+	if (argc < 6)
+		return (p_error("Argument must be at least five for here_doc\n"), NULL);
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
 		return (p_error("Alloc data error\n"), NULL);
@@ -62,7 +64,7 @@ t_data	*here_data(int argc, char **argv, char **env)
 	argv++;
 	argc--;
 	data->cmd = get_all_cmd(--argc, ++argv, data->path);
-	if (!data->cmd || data->file1 == -1 || data->file2 == -1)
+	if (!data->cmd || data->file2 == -1)
 		return (destroy_data(data), NULL);
 	return (data);
 }
