@@ -1,43 +1,68 @@
-NAME			=	pipex
+NAME				=	pipex
 
-LIBFT			=	./libft/libft.a
+BONUS				=	pipex_bonus
 
-LIBFT_DIR		=	./libft/
+LIBFT				=	./libft/libft.a
 
-SRC				=	./src/main.c ./src/parser.c ./src/print.c \
-					./src/get_path.c ./src/destroy.c
+LIBFT_DIR			=	./libft/
 
-CC				=	gcc -Wall -Werror -Wextra -g
+SRC					=	./src/main.c ./src/parser.c \
+						./src/print.c ./src/get_path.c \
+						./src/destroy.c ./src/quote.c
 
-OBJ_DIR			=	obj
+SRC_BONUS			=	./src_bonus/main.c ./src_bonus/parser.c \
+						./src_bonus/print.c ./src_bonus/get_path.c \
+						./src_bonus/destroy.c ./src_bonus/quote.c \
+						./src_bonus/get_cmd.c
 
-OBJ				=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
+CC					=	cc -Wall -Werror -Wextra
 
-.SILENT			:
+OBJ_DIR				=	obj
+
+OBJ_DIR_B			=	obj_bonus
+
+OBJ					=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir ${SRC}))
+
+OBJ_BONUS			=	$(patsubst %.c, $(OBJ_DIR_B)/%.o, $(notdir ${SRC_BONUS}))
+
+.SILENT				:
 
 ${shell mkdir -p ${OBJ_DIR}}
 
-${OBJ_DIR}/%.o	:	./src/%.c
-					${CC} -o $@ -c $<
+${shell mkdir -p ${OBJ_DIR_B}}
 
-all				:	$(NAME)
+${OBJ_DIR}/%.o		:	./src/%.c
+						${CC} -o $@ -c $<
 
-$(NAME)			:	$(OBJ)
-					make --no-print-directory -C $(LIBFT_DIR)
-					$(CC) -o $@ $^ $(LIBFT)
-					echo "Pipex :: Compilation successfully."
+${OBJ_DIR_B}/%.o	:	./src_bonus/%.c
+						${CC} -o $@ -c $<
 
-clean			:
-					make clean --no-print-directory -C ${LIBFT_DIR}
-					rm -rf $(OBJ_DIR)
-					echo "Pipex :: Clean successfully."
+all					:	$(NAME)
 
-fclean			:	clean
-					make fclean --no-print-directory -C ${LIBFT_DIR}
-					rm -f $(NAME)
-					echo "Pipex :: Fclean successfully."
+bonus				:	$(BONUS)
 
-re				:	fclean
-					make --no-print-directory -C ./
+$(NAME)				:	$(OBJ)
+						make --no-print-directory -C $(LIBFT_DIR)
+						$(CC) -o $@ $^ $(LIBFT)
+						rm -rf $(OBJ_DIR_B)
+						echo "Pipex :: Compilation successfully."
 
-.PHONY			:	all clean fclean re
+$(BONUS)			:	$(OBJ_BONUS)
+						make --no-print-directory -C $(LIBFT_DIR)
+						$(CC) -o $@ $^ $(LIBFT)
+						echo "Pipex_bonus :: Compilation successfully."
+
+clean				:
+						make clean --no-print-directory -C ${LIBFT_DIR}
+						rm -rf $(OBJ_DIR) $(OBJ_DIR_B)
+						echo "Pipex :: Clean successfully."
+
+fclean				:	clean
+						make fclean --no-print-directory -C ${LIBFT_DIR}
+						rm -f $(NAME) $(BONUS)
+						echo "Pipex :: Fclean successfully."
+
+re					:	fclean
+						make --no-print-directory -C ./
+
+.PHONY				:	all bonus clean fclean re
