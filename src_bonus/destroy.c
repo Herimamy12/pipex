@@ -23,6 +23,8 @@ void	destroy_data(t_data *data)
 		close (data->file1);
 	if (data->file2 != -1)
 		close (data->file2);
+	if (data->hd && close(data->fds[0]) == -1)
+		p_error("close() data->fd[0] error\n");
 	free (data);
 }
 

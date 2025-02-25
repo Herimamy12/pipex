@@ -85,6 +85,8 @@ char	*get_cmd(char *argv, char **path)
 {
 	char	*cmd;
 
+	if (!ft_strlen(argv))
+		return (p_error("Invalid command\n"), NULL);
 	while (*path)
 	{
 		cmd = ft_strjoin (*path, argv);

@@ -56,7 +56,7 @@ t_data	*here_data(int argc, char **argv, char **env)
 	data->path = get_path(env);
 	if (!data->path)
 		return (free(data), NULL);
-	data->file1 = 0;
+	data->file1 = -1;
 	data->file2 = new_file(argv[--argc], 'A');
 	here_doc(data->fds, argv[2]);
 	argv++;
