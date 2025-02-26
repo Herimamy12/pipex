@@ -69,7 +69,7 @@ int	exec_in_child(t_cmd *cmd, char **env, t_data *data)
 		destroy_data (data);
 		exit (4);
 	}
-	wait(NULL);
+	waitpid(pid, NULL, WNOHANG);
 	if (set_stream(fds, 0))
 		return (-1);
 	return (0);

@@ -44,7 +44,7 @@ int	exec_pipex(t_data *data, char **env)
 		destroy_data (data);
 		exit (4);
 	}
-	wait(NULL);
+	waitpid(pid, NULL, WNOHANG);
 	if (set_stream (fds, 0, data->file2))
 		return (-1);
 	execve(data->cmd2->cmd, data->cmd2->arg, env);
